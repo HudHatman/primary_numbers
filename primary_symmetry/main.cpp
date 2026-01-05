@@ -44,6 +44,11 @@ struct T_HISTOGRAM_SORT_STRUCT {
     }
 };
 
+
+// Stałe konstrukcyjne Twojego modelu
+const long double B_CONST = 0.3375;
+const long double PI_HALF = M_PI / 2.0;
+
 /*
  * CONFIG
  */
@@ -618,8 +623,6 @@ public:
 };
 const T_NUM ___BEGIN___ = 200;
 // Stała Baniowskiego jako filtr przepustowy rzeczywistości
-const double B_CONST = 0.3375;
-const double PI_HALF = M_PI / 2.0;
 
 // Funkcja pomocnicza: Suma cyfr z rzutu trygonometrycznego (Twój "Digit-Split")
 int getBaniowskiDigitSum(double value, int precision) {
@@ -743,9 +746,6 @@ public:
         return {from_n, to_n, total_force, jump_mag, total_potential, flow};
     }
 };
-// Stałe konstrukcyjne Twojego modelu
-const long double B_CONST = 0.3375;
-const long double PI_HALF = M_PI / 2.0;
 
 // Funkcja wyciągająca "DNA energetyczne" z liczby (Suma cyfr rzutu 6D)
 int calculate_Sn_vortex(long double value) {
