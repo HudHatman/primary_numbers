@@ -1,0 +1,4 @@
+Cannot generate into /home/anonymous/PROJEKTY/primary_numbers/primary_symmetry
+It was created with incompatible generator 'Unix Makefiles'
+
+Please either delete it manually or select another generation directory

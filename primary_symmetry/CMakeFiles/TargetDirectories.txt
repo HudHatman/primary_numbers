@@ -1,0 +1,3 @@
+/home/anonymous/PROJEKTY/primary_numbers/primary_symmetry/CMakeFiles/primary_symmetry.dir
+/home/anonymous/PROJEKTY/primary_numbers/primary_symmetry/CMakeFiles/edit_cache.dir
+/home/anonymous/PROJEKTY/primary_numbers/primary_symmetry/CMakeFiles/rebuild_cache.dir

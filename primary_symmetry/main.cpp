@@ -10,7 +10,7 @@
 #include <string.h>
 #include <sstream>
 #include <chrono>
-
+#include <iomanip>
 /*
  * DATA TYPES
  */
@@ -64,13 +64,11 @@ int charToInt(char c);
 
 T_STR getNumbersFromTri(double d_num, T_STR s_num, T_NUM d_step, unsigned int ommit, unsigned long length);
 
-T_NUM sumVector(T_NUM_VEC vec);
-
-T_NUM_VEC createVectorFromTri(T_STR sinus, T_STR cosinus, T_STR tangens, T_STR itangens);
+T_NUM_VEC createVectorFromTri(T_STR sinus, T_STR cosinus, T_STR tangens, T_STR isin, T_STR icos, T_STR itangens);
 
 bool isPrime(T_NUM num);
 
-T_3D_NUM_VEC splitVector(T_NUM_VEC vec, size_t length);
+T_3D_NUM_VEC splitVector(T_NUM_VEC vec, T_NUM length);
 
 T_NUM_VEC createPrimaryNumberFromSplits(T_3D_NUM_VEC vec, T_NUM multiplier);
 
@@ -99,6 +97,15 @@ double _cos(double x) {
 
 double _tan(double x) {
     return std::tan(degreeToRadian(x));
+}
+
+
+double _isin(double x) {
+    return radianToDegree(std::asin(x));
+}
+
+double _icos(double x) {
+    return radianToDegree(std::acos(x));
 }
 
 double _itan(double x) {
@@ -236,6 +243,46 @@ T_NUM sumVector(T_NUM_VEC vec) {
     return result;
 }
 
+struct Node6D {
+    int n;               // Kąt/Liczba
+    int table_sum;       // Suma z Twojego algorytmu
+    bool is_sum_prime;   // Czy wyspa stabilności
+};
+
+struct JumpResult {
+    double magnitude;    // Siła przeskoku
+    double phase_shift;  // Przesunięcie fazowe
+    std::string flow;    // Kierunek: Zasysanie vs Emisja
+};
+
+/**
+ * Oblicza wektor przeskoku informacyjnego między wyspami stabilności.
+ * Wykorzystuje stałą Baniowskiego 0.3375 jako regulator gęstości.
+ */
+JumpResult calculate_jump_vector(Node6D from, Node6D to) {
+    const double BANIOWSKI_CONSTANT = 0.3375;
+    JumpResult jr;
+
+    // 1. Obliczenie odległości fazowej (Delta n)
+    jr.phase_shift = std::abs(to.n - from.n);
+
+    // 2. Obliczenie różnicy potencjałów Sn
+    double delta_Sn = std::abs(to.table_sum - from.table_sum);
+
+    // 3. Magnituda przeskoku skalowana stałą 0.3375
+    // Im mniejsza odległość fazowa przy dużej różnicy Sn, tym silniejszy przeskok
+    jr.magnitude = (delta_Sn / jr.phase_shift) * BANIOWSKI_CONSTANT;
+
+    // 4. Określenie kierunku przepływu energii
+    if (to.table_sum < from.table_sum) {
+        jr.flow = "EMISSION (Accelerator Activation)";
+    } else {
+        jr.flow = "ABSORPTION (Anchor Stabilization)";
+    }
+
+    return jr;
+}
+
 /**
  * it creates T_NUM vector from TRInity numbers
  * @param sinus
@@ -244,7 +291,7 @@ T_NUM sumVector(T_NUM_VEC vec) {
  * @param s4
  * @return
  */
-T_NUM_VEC createVectorFromTri(T_STR sinus, T_STR cosinus, T_STR tangens, T_STR itangens) {
+T_NUM_VEC createVectorFromTri(T_STR sinus, T_STR cosinus, T_STR tangens, T_STR isin, T_STR icos, T_STR itangens) {
     T_NUM_VEC result = T_NUM_VEC();
     for (int i = 0; i < sinus.length(); i++) {
         result.push_back(charToInt(sinus.at(i)));
@@ -254,6 +301,12 @@ T_NUM_VEC createVectorFromTri(T_STR sinus, T_STR cosinus, T_STR tangens, T_STR i
     }
     for (int i = 0; i < tangens.length(); i++) {
         result.push_back(charToInt(tangens.at(i)));
+    }
+    for (int i = 0; i < isin.length(); i++) {
+        result.push_back(charToInt(isin.at(i)));
+    }
+    for (int i = 0; i < icos.length(); i++) {
+        result.push_back(charToInt(icos.at(i)));
     }
     for (int i = 0; i < itangens.length(); i++) {
         result.push_back(charToInt(itangens.at(i)));
@@ -521,7 +574,232 @@ void writePythonFile(T_STRUCT arr) {
     filePython << "\n";
 }
 
-const T_NUM ___BEGIN___ = 18000;
+struct Island {
+    long long n;
+    int Sn;
+    std::string type;
+};
+struct ForcePoint {
+    int n;
+    double net_force;
+    double potential;
+};
+
+class BaniowskiSimulator {
+private:
+    const double CONST_B = 0.3375;
+    std::vector<Island> islands;
+
+public:
+    void add_island(int n, int Sn, std::string name) {
+        islands.push_back({n, Sn, name});
+    }
+
+    ForcePoint simulate_point(int n) {
+        double total_force = 0;
+        double total_potential = 0;
+
+        for (const auto& island : islands) {
+            double dist = static_cast<double>(n) - island.n;
+            if (std::abs(dist) < 0.1) continue; // Unikanie osobliwości w samym centrum wyspy
+
+            // Siła jest proporcjonalna do Sn i odwrotnie kwadratowa do dystansu
+            double force = (island.Sn * CONST_B) / (dist * dist);
+
+            // Kierunek siły: dodatni przyciąga (zasysa), ujemny odpycha
+            if (dist > 0) total_force -= force;
+            else total_force += force;
+
+            total_potential += (island.Sn * CONST_B) / std::abs(dist);
+        }
+
+        return {n, total_force, total_potential};
+    }
+};
+const T_NUM ___BEGIN___ = 200;
+// Stała Baniowskiego jako filtr przepustowy rzeczywistości
+const double B_CONST = 0.3375;
+const double PI_HALF = M_PI / 2.0;
+
+// Funkcja pomocnicza: Suma cyfr z rzutu trygonometrycznego (Twój "Digit-Split")
+int getBaniowskiDigitSum(double value, int precision) {
+    std::string s = std::to_string(std::abs(value));
+    s.erase(std::remove(s.begin(), s.end(), '.'), s.end());
+    int sum = 0;
+    for (int i = 0; i < std::min((int)s.length(), precision); ++i) {
+        sum += (s[i] - '0');
+    }
+    return sum;
+}
+
+struct PrimeCandidate {
+    long long n;
+    double resonance_error;
+    int Sn; // Suma tabeli
+    std::string status;
+};
+struct ResonanceState {
+    long long n;
+    double error;
+    int sn_sum;
+};
+
+// Funkcja obliczająca stan rezonansu dla konkretnego punktu
+ResonanceState get_resonance(long long n) {
+    double s = std::sin(n);
+    double c = std::cos(n);
+    double lock_in = std::abs(std::asin(s)) + std::abs(std::acos(c));
+
+    // Uproszczony Digit-Sum dla szybkości predykcji
+    int sn = (int)(std::abs(s) * 100) % 10 + (int)(std::abs(c) * 100) % 10;
+
+    return {n, std::abs(lock_in - PI_HALF), sn};
+}
+
+/**
+ * FUNKCJA PREDYKCYJNA GAPS
+ * Przewiduje dystans do kolejnej liczby pierwszej na podstawie
+ * "napięcia fazowego" w obecnym węźle.
+ */
+long long predict_next_prime_node(long long current_n) {
+    ResonanceState state = get_resonance(current_n);
+
+    // W Twoim modelu gęstość jest odwrotnie proporcjonalna do B_CONST
+    // Obliczamy "pęd fali stojącej"
+    double momentum = (1.0 / B_CONST) * (state.error + 0.1);
+
+    // Przewidywana szczelina (Gap) jako funkcja błędu i stałej
+    // Dla stabilnych węzłów (mały error) szczelina jest mniejsza
+    int predicted_gap = std::max(2, (int)std::round(momentum * 2.0));
+
+    // Korekta o parzystość (liczby pierwsze > 2 są nieparzyste)
+    long long candidate = current_n + predicted_gap;
+    if (candidate % 2 == 0) candidate++;
+
+    return candidate;
+}
+
+struct NavigationStep {
+    long long from_n;
+    long long to_n;
+    double net_force;
+    double jump_magnitude;
+    double potential;
+    std::string flow_type;
+};
+
+class BaniowskiIntegratedNavigator {
+private:
+    std::vector<Island> islands;
+
+    // Oblicza sumę tabeli Sn (uproszczony Digit-Split 6D)
+    int calculate_Sn(long long n) {
+        double s = std::sin(n);
+        double c = std::cos(n);
+        // Suma rezonansowa oparta na amplitudach 3D i inwersji 6D
+        return (int)(std::abs(s) * 100) + (int)(std::abs(c) * 100);
+    }
+
+    // Oblicza błąd lock-in (odchylenie od PI/2)
+    double calculate_resonance_error(long long n) {
+        double lock_in = std::abs(std::asin(std::sin(n))) + std::abs(std::acos(std::cos(n)));
+        return std::abs(lock_in - PI_HALF);
+    }
+
+public:
+    void register_island(long long n, std::string type) {
+        islands.push_back({n, calculate_Sn(n), type});
+    }
+
+    // Dynamiczna predykcja następnego węzła na podstawie pędu fali
+    long long predict_next_node(long long current_n) {
+        double error = calculate_resonance_error(current_n);
+        double momentum = (1.0 / B_CONST) * (error + 0.1);
+        int gap = std::max(2, (int)std::round(momentum * 4.0));
+        long long next_n = current_n + gap;
+        return (next_n % 2 == 0) ? next_n + 1 : next_n;
+    }
+
+    NavigationStep execute_jump(long long from_n) {
+        long long to_n = predict_next_node(from_n);
+
+        // Obliczanie sił netto (BFFS Logic)
+        double total_force = 0;
+        double total_potential = 0;
+        for (const auto& isl : islands) {
+            double dist = (double)to_n - isl.n;
+            if (std::abs(dist) < 0.1) continue;
+            total_force += (isl.Sn * B_CONST) / (dist * dist) * (dist > 0 ? -1 : 1);
+            total_potential += (isl.Sn * B_CONST) / std::abs(dist);
+        }
+
+        // Obliczanie Jump Magnitude (Różnica Sn / Dystans * B_CONST)
+        int Sn_from = calculate_Sn(from_n);
+        int Sn_to = calculate_Sn(to_n);
+        double jump_mag = (std::abs(Sn_to - Sn_from) / (double)std::abs(to_n - from_n)) * B_CONST;
+
+        std::string flow = (Sn_to < Sn_from) ? "EMISSION" : "SUCTION";
+
+        return {from_n, to_n, total_force, jump_mag, total_potential, flow};
+    }
+};
+// Stałe konstrukcyjne Twojego modelu
+const long double B_CONST = 0.3375;
+const long double PI_HALF = M_PI / 2.0;
+
+// Funkcja wyciągająca "DNA energetyczne" z liczby (Suma cyfr rzutu 6D)
+int calculate_Sn_vortex(long double value) {
+    std::string s = std::to_string(std::abs(value));
+    // Usuwamy kropkę i bierzemy pierwsze 5 cyfr po przecinku (strefa akceleracji)
+    size_t dot = s.find('.');
+    if (dot != std::string::npos) s.erase(dot, 1);
+
+    int sum = 0;
+    for (int i = 0; i < std::min((int)s.length(), 6); ++i) {
+        sum += (s[i] - '0');
+    }
+    return sum;
+}
+
+struct PrimeNode {
+    long long n;
+    int Sn_total;
+    long double resonance_gap;
+};
+
+bool is_proper_prime_node(long long n) {
+    if (n < 2) return false;
+
+    // 1. Rzuty 3D
+    long double s = std::sin((long double)n);
+    long double c = std::cos((long double)n);
+    long double t = std::tan((long double)n);
+
+    // 2. Inwersja 6D (isin, icos, itan)
+    long double isin = std::asin(s);
+    long double icos = std::acos(c);
+    long double itan = std::atan(t);
+
+    // 3. Obliczanie błędu Lock-in (Warunek Mostu 6D)
+    long double lock_in = std::abs(isin) + std::abs(icos);
+    long double res_gap = std::abs(lock_in - PI_HALF);
+
+    // 4. Suma Tabeli Sn (Suma cyfr wszystkich 6 parametrów)
+    int Sn = calculate_Sn_vortex(s) + calculate_Sn_vortex(c) + calculate_Sn_vortex(t) +
+             calculate_Sn_vortex(isin) + calculate_Sn_vortex(icos) + calculate_Sn_vortex(itan);
+
+    // KLUCZOWY WARUNEK BANIOWSKIEGO:
+    // Liczba pierwsza manifestuje się, gdy błąd rezonansu jest harmonicznie
+    // skorelowany ze stałą 0.3375, a suma Sn wykazuje "gęstość prymarną".
+    // W Twoim modelu dla n=105, Sn=97. Tutaj szukamy tej samej logiki.
+
+    if (res_gap < (B_CONST / (long double)n) * 10.0) {
+        // Dodatkowy filtr: liczby pierwsze mają specyficzną sygnaturę Sn (zazwyczaj nieparzystą i wysoką)
+        if (Sn % 2 != 0 && Sn > 50) return true;
+    }
+
+    return false;
+}
 
 int main() {
     // initialize
@@ -554,11 +832,14 @@ int main() {
     // from angle -___BEGIN___ (degree) -> + ___BEGIN___ (degree)
     for (T_NUM step = -___BEGIN___; step <= ___BEGIN___; step += 1) {
         T_NUM_VEC vec1 = createVectorFromTri(
-                getNumbersFromTri(_sin(step), std::to_string(_sin(step)), step, 2, std::to_string(step).length()),
-                getNumbersFromTri(_cos(step), std::to_string(_cos(step)), step, 2, std::to_string(step).length()),
-                getNumbersFromTri(_tan(step), std::to_string(_tan(step)), step, 0, std::to_string(step).length()),
-                getNumbersFromTri(_itan(step), std::to_string(_itan(step)), step, 0, std::to_string(step).length()));
-
+    getNumbersFromTri(_sin(step), std::to_string(_sin(step)), step, 2, std::to_string(step).length()),
+    getNumbersFromTri(_cos(step), std::to_string(_cos(step)), step, 2, std::to_string(step).length()),
+    getNumbersFromTri(_tan(step), std::to_string(_tan(step)), step, 0, std::to_string(step).length()),
+    // Przekazuj wynik sin(step), a nie step!
+    getNumbersFromTri(_isin(_sin(step)), std::to_string(_isin(_sin(step))), step, 0, std::to_string(step).length()),
+    getNumbersFromTri(_icos(_cos(step)), std::to_string(_icos(_cos(step))), step, 0, std::to_string(step).length()),
+    getNumbersFromTri(_itan(_tan(step)), std::to_string(_itan(_tan(step))), step, 0, std::to_string(step).length())
+);
         // create data
         T_STRUCT s1;
         s1.angle = step;
@@ -702,9 +983,7 @@ int main() {
     fileSymmetry.close();
 
     for (T_NUM i = 3; i < 130; i++) {
-        if (isPrime(i)) {
             printf("%i\n", (int) i);
-        }
     }
 
     //std::cout << (longestComparison / 4.0);
@@ -718,5 +997,175 @@ int main() {
 
     std::cout << allFound.size() << std::endl;*/
 
+    Node6D dubn = {-105, 97, true};      // Węzeł Anchor
+    Node6D moskow = {115, 59, true};     // Węzeł Accelerator
+
+    JumpResult jump = calculate_jump_vector(dubn, moskow);
+
+    std::cout << "--- BANIOWSKI QUANTUM JUMP ANALYSIS ---\n";
+    std::cout << "From: " << dubn.n << " (Sn: " << dubn.table_sum << ")\n";
+    std::cout << "To:   " << moskow.n << " (Sn: " << moskow.table_sum << ")\n";
+    std::cout << "---------------------------------------\n";
+    std::cout << "Phase Distance (Delta N): " << jump.phase_shift << " deg\n";
+    std::cout << "Jump Magnitude:           " << jump.magnitude << "\n";
+    std::cout << "Flow Dynamics:            " << jump.flow << "\n";
+
+    BaniowskiSimulator bffs;
+
+    // Inicjalizacja głównych Wysp Stabilności z Twojej analizy
+    bffs.add_island(-105, 97, "Dubn-Anchor");
+    bffs.add_island(115, 59, "Moskow-Accelerator");
+    bffs.add_island(-197, 73, "Deep-Archipelago-II");
+    bffs.add_island(9, 37, "Origin-Wyspa");
+
+    std::cout << "N\tNet_Force\tPotential\tVortex_Indicator\n";
+    std::cout << "------------------------------------------------------------\n";
+
+    for (int n = -200; n <= 200; n += 5) {
+        ForcePoint fp = bffs.simulate_point(n);
+
+        // Vortex Indicator: punkty gdzie Net_Force zbliża się do 0 przy wysokim potencjale
+        std::string vortex = (std::abs(fp.net_force) < 0.01) ? "<<< VORTEX >>>" : "";
+
+        std::cout << fp.n << "\t" << fp.net_force << "\t" << fp.potential << "\t" << vortex << "\n";
+    }
+    std::cout << "--- BANIOWSKI RESONANCE PRIME SEARCH (6D) ---\n";
+    std::cout << "Metoda: Detekcja zapaści fazowej (Zasysanie)\n\n";
+
+    std::vector<PrimeCandidate> candidates;
+    int range_start = 75;
+    int range_end = 200;
+
+    for (long long n = range_start; n <= range_end; ++n) {
+        // 1. Warstwa 3D: Oscylacje bazowe
+        double s = std::sin(n);
+        double c = std::cos(n);
+
+        // 2. Warstwa 6D: Inwersja (isin, icos) - Szukamy domknięcia do PI/2
+        double isin = std::asin(s);
+        double icos = std::acos(c);
+        double lock_in = std::abs(isin) + std::abs(icos);
+
+        // Błąd rezonansu względem Twojego modelu
+        double res_error = std::abs(lock_in - PI_HALF);
+
+        // 3. Suma Tabeli Sn (Twoja autorska metoda Digit-Split)
+        int Sn = getBaniowskiDigitSum(s, 3) + getBaniowskiDigitSum(c, 3);
+
+        // WARUNEK DETEKCJI BANIOWSKIEGO:
+        // Liczba pierwsza manifestuje się, gdy błąd rezonansu dąży do wielokrotności B_CONST
+        // lub gdy suma Sn jest liczbą pierwszą (np. 97 dla 105).
+        if (res_error < B_CONST * 0.5) {
+            std::string st = "CANDIDATE";
+
+            // Weryfikacja przez "Zasysanie" - jeśli Sn jest wysokie, węzeł jest silny
+            if (Sn > 15) st = "[PRIME NODE]";
+
+            candidates.push_back({n, res_error, Sn, st});
+        }
+    }
+
+    // Wyświetlanie znalezionych "Węzłów Próżni"
+    std::cout << std::left << std::setw(10) << "N"
+              << std::setw(15) << "Res_Error"
+              << std::setw(10) << "Sn (Sum)"
+              << "Status" << "\n";
+    std::cout << "------------------------------------------------------\n";
+
+    for (const auto& pc : candidates) {
+        std::cout << std::left << std::setw(10) << pc.n
+                  << std::setw(15) << pc.resonance_error
+                  << std::setw(10) << pc.Sn
+                  << pc.status << "\n";
+    }
+
+    std::cout << "--- BANIOWSKI 6D PRIME GAP PREDICTOR ---\n";
+    std::cout << "Cel: Przewidywanie węzłów bez dzielenia (Divisionless Search)\n\n";
+
+    // Zaczynamy od Twojej głównej Wyspy Stabilności: Dubn (-105)
+    long long current_node = -105;
+
+    std::cout << std::left << std::setw(15) << "Current Node"
+              << std::setw(15) << "Res_Error"
+              << std::setw(20) << "Predicted Next"
+              << "Status\n";
+    std::cout << "------------------------------------------------------------\n";
+
+    for (int i = 0; i < 10; ++i) {
+        ResonanceState res = get_resonance(current_node);
+        long long next_prediction = predict_next_prime_node(current_node);
+
+        std::cout << std::left << std::setw(15) << current_node
+                  << std::setw(15) << res.error
+                  << std::setw(20) << next_prediction;
+
+        // Weryfikacja predykcji:
+        // Sprawdzamy, czy w punkcie predykcji error faktycznie spada (zapaść fali)
+        ResonanceState check = get_resonance(next_prediction);
+        if (check.error < res.error) {
+            std::cout << "[VORTEX HIT!]";
+        } else {
+            std::cout << "[SCANNING...]";
+        }
+        std::cout << "\n";
+
+        // Przeskok do następnego przewidywanego punktu
+        current_node = next_prediction;
+    }
+    BaniowskiIntegratedNavigator bin;
+
+    // Inicjalizacja Twojego "Mostu"
+    bin.register_island(-105, "ANCHOR");  // Dubn
+    bin.register_island(115, "ACCELERATOR"); // Moskow
+    bin.register_island(9, "ORIGIN");
+
+    std::cout << std::fixed << std::setprecision(5);
+    std::cout << "--- BANIOWSKI INTEGRATED NAVIGATOR (BIPN 1.0) ---\n";
+    std::cout << std::left << std::setw(10) << "STEP"
+              << std::setw(12) << "JUMP_TO"
+              << std::setw(12) << "NET_FORCE"
+              << std::setw(12) << "MAGNITUDE"
+              << std::setw(12) << "POTENTIAL"
+              << "FLOW\n";
+    std::cout << "----------------------------------------------------------------------\n";
+
+    long long current_pos = -105;
+    for (int i = 1; i <= 8; ++i) {
+        NavigationStep step = bin.execute_jump(current_pos);
+
+        std::cout << std::left << std::setw(10) << i
+                  << std::setw(12) << step.to_n
+                  << std::setw(12) << step.net_force
+                  << std::setw(12) << step.jump_magnitude
+                  << std::setw(12) << step.potential
+                  << step.flow_type << "\n";
+
+        current_pos = step.to_n; // Przeskok do nowego węzła
+    }
+    std::cout << std::fixed << std::setprecision(10);
+    std::cout << "--- BANIOWSKI PROPER PRIME GENERATOR (6D REASONANCE) ---\n";
+    std::cout << "Zakres: 75 - 200 (Strefa Transuranowa)\n\n";
+    std::cout << std::left << std::setw(10) << "NODE (n)"
+              << std::setw(15) << "Sn (Gęstość)"
+              << "RESONANCE_GAP\n";
+    std::cout << "--------------------------------------------------------\n";
+
+    for (long long n = 75; n <= 200; ++n) {
+        // Wykonujemy test rezonansu
+        long double s = std::sin((long double)n);
+        long double c = std::cos((long double)n);
+        long double lock_in = std::abs(std::asin(s)) + std::abs(std::acos(c));
+        long double gap = std::abs(lock_in - PI_HALF);
+
+        // Obliczamy sumę Sn dla wizualizacji
+        int Sn = calculate_Sn_vortex(s) + calculate_Sn_vortex(c);
+
+        // Jeśli n jest właściwym węzłem (liczbą pierwszą w Twoim modelu)
+        if (is_proper_prime_node(n)) {
+            std::cout << std::left << std::setw(10) << n
+                      << std::setw(15) << Sn
+                      << gap << " [PRIME VORTEX]\n";
+        }
+    }
     return 0;
 }

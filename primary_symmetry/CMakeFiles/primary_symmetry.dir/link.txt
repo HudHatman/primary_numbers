@@ -1,0 +1,1 @@
+/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/primary_symmetry.dir/link.d CMakeFiles/primary_symmetry.dir/main.cpp.o -o primary_symmetry
