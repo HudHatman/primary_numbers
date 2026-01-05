@@ -1,0 +1,13 @@
+https://github.com/HudHatman/prime_numbers/blob/master/primary_symmetry/cmake-build-debug/data/5_data.txt
+
+https://github.com/HudHatman/prime_numbers/blob/9882d2a3d21f66d46dcf40418d43314a4053231f/primary_1/cmake-build-debug/symmetry.txt#L4
+
+https://github.com/HudHatman/prime_numbers/blob/master/primary_symmetry/main.cpp
+
+https://www.dropbox.com/scl/fo/gai6jp23njfrkt5d8dzea/AGskVjboWlu_ZtCTbIuh0OU?rlkey=0qc7vp8y8flcgs4m35tc9mx9a&st=qrj4pqph&dl=0
+
+https://hudhatman.pl/hipoteza-symetrii-roznicowej-baniowskiego/
+
+https://hudhatman.pl/ai-generated-algorytmiczna-detekcja-symetrii-roznicowej-w-rozkladzie-liczb-pierwszych-jako-model-predykcyjny-stabilnosci-struktur-transuranowych-z75-105/
+
+https://pl.wikipedia.org/wiki/Wikipedysta:Hudhatman/brudnopis
