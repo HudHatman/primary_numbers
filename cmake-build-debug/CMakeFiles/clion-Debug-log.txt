@@ -1,4 +1,17 @@
 /home/anonymous/PROGRAMY/clion-2025.2.4/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/anonymous/PROGRAMY/clion-2025.2.4/bin/ninja/linux/x64/ninja -G Ninja -S /home/anonymous/PROJEKTY/primary_numbers -B /home/anonymous/PROJEKTY/primary_numbers/cmake-build-debug
 -- Configuring done (0.0s)
--- Generating done (0.0s)
--- Build files have been written to: /home/anonymous/PROJEKTY/primary_numbers/cmake-build-debug
+CMake Error at CMakeLists.txt:13 (add_executable):
+  Cannot find source file:
+
+    Riemann_Hypothesis/main.cpp
+
+  Tried extensions .c .C .c++ .cc .cpp .cxx .cu .mpp .m .M .mm .ixx .cppm
+  .ccm .cxxm .c++m .h .hh .h++ .hm .hpp .hxx .in .txx .f .F .for .f77 .f90
+  .f95 .f03 .hip .ispc
+
+
+CMake Error at CMakeLists.txt:13 (add_executable):
+  No SOURCES given to target: primary_numbers
+
+
+CMake Generate step failed.  Build files cannot be regenerated correctly.

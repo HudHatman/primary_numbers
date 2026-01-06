@@ -42,4 +42,6 @@ add_executable(primary_numbers
         sieve/bigInt.h
         sieve/main.cpp
         test/main.cpp
-        untitled2/main.cpp)
+        untitled2/main.cpp
+        Riemann_Hypothesis/main.cpp
+        ___/calculate_element.cpp)
