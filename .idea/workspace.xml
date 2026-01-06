@@ -26,17 +26,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="881afcb4-5f5c-4a5d-a3d9-cb59943e7087" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/primary_symmetry/CMakeFiles/primary_symmetry.dir/main.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/primary_symmetry/CMakeFiles/primary_symmetry.dir/main.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/primary_symmetry/data/5_histogram.txt" beforeDir="false" afterPath="$PROJECT_DIR$/primary_symmetry/data/5_histogram.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/primary_symmetry/data/5_python.txt" beforeDir="false" afterPath="$PROJECT_DIR$/primary_symmetry/data/5_python.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/primary_symmetry/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/primary_symmetry/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/primary_symmetry/primary_symmetry" beforeDir="false" afterPath="$PROJECT_DIR$/primary_symmetry/primary_symmetry" afterDir="false" />
-    </list>
+    <list default="true" id="881afcb4-5f5c-4a5d-a3d9-cb59943e7087" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -99,7 +89,7 @@
       <option name="presentableId" value="Default" />
       <updated>1767652419800</updated>
       <workItem from="1767652421100" duration="1100000" />
-      <workItem from="1767661852677" duration="434000" />
+      <workItem from="1767661852677" duration="746000" />
     </task>
     <servers />
   </component>
