@@ -27,17 +27,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="881afcb4-5f5c-4a5d-a3d9-cb59943e7087" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/___/calculate_element.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/primary_symmetry/sym.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Riemann_Hypothesis/main.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-fe5edcb15e69df08139f.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2026-01-05T22-33-44-0143.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/target-primary_numbers-Debug-da7b8c210e6710337c33.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prime_vortext_finder/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/prime_vortext_finder/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/___/calculate_element" beforeDir="false" afterPath="$PROJECT_DIR$/___/calculate_element" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/___/calculate_element.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/___/calculate_element.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/primary_symmetry/CMakeFiles/primary_symmetry.dir/main.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/primary_symmetry/CMakeFiles/primary_symmetry.dir/main.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/primary_symmetry/data/5_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/primary_symmetry/data/5_data.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/primary_symmetry/main" beforeDir="false" afterPath="$PROJECT_DIR$/primary_symmetry/main" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/primary_symmetry/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/primary_symmetry/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/primary_symmetry/primary_symmetry" beforeDir="false" afterPath="$PROJECT_DIR$/primary_symmetry/primary_symmetry" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,6 +48,13 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///home/anonymous/PROJEKTY/primary_numbers/primary_symmetry/sym.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/anonymous/PROJEKTY/primary_numbers/primary_symmetry/sym.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/anonymous/PROJEKTY/primary_numbers/primary_symmetry/sym.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/anonymous/PROJEKTY/primary_numbers/primary_symmetry/sym.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/anonymous/PROJEKTY/primary_numbers/primary_symmetry/sym.cpp" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectApplicationVersion">
     <option name="ide" value="CLion" />
@@ -68,27 +73,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.west.config.association.type.startup.service": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "/home/anonymous/PROJEKTY/primary_numbers/primary_symmetry",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/primary_symmetry" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
@@ -109,7 +120,7 @@
       <option name="presentableId" value="Default" />
       <updated>1767652419800</updated>
       <workItem from="1767652421100" duration="1100000" />
-      <workItem from="1767661852677" duration="12631000" />
+      <workItem from="1767661852677" duration="46854000" />
     </task>
     <servers />
   </component>

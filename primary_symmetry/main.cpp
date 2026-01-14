@@ -867,9 +867,10 @@ int main() {
     // from angle -___BEGIN___ (degree) -> + ___BEGIN___ (degree)
     for (T_NUM step = -___BEGIN___; step <= ___BEGIN___; step += 1) {
         T_NUM_VEC vec1 = createVectorFromTri(
-    getNumbersFromTri(_sin(step), std::to_string(_sin(step)), step, 2, std::to_string(step).length()),
-    getNumbersFromTri(_cos(step), std::to_string(_cos(step)), step, 2, std::to_string(step).length()),
     getNumbersFromTri(_tan(step), std::to_string(_tan(step)), step, 0, std::to_string(step).length()),
+    getNumbersFromTri(_cos(step), std::to_string(_cos(step)), step, 2, std::to_string(step).length()),
+    getNumbersFromTri(_sin(step), std::to_string(_sin(step)), step, 2, std::to_string(step).length()),
+
     // Przekazuj wynik sin(step), a nie step!
     getNumbersFromTri(_isin(_sin(step)), std::to_string(_isin(_sin(step))), step, 0, std::to_string(step).length()),
     getNumbersFromTri(_icos(_cos(step)), std::to_string(_icos(_cos(step))), step, 0, std::to_string(step).length()),

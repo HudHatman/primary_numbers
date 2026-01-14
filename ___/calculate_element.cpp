@@ -31,40 +31,42 @@ bool isPrime(int n) {
 
 // --- STRUKTURA DANYCH PIERWIASTKA ---
 
+
 struct ElementData {
-    int angle;                      // Numer porządkowy (Z)
-    vector<vector<string>> table;   // Tabela 2D bloków
-    int table_sum_provided;         // Dostarczona suma kontrolna
+    int angle;
+    std::vector<std::vector<std::string>> table;
+    int table_sum_provided;
     bool is_sum_prime;
 
-    // Protony i Elektrony = Wartość bezwzględna numeru angle
     int getProtons() const { return abs(angle); }
     int getElectrons() const { return abs(angle); }
 
-    // Obliczanie Neutronów (N)
-    // Według algorytmu, jądro (neutrony) jest zakodowane w pierwszych 3 rzędach tabeli
     int getNeutrons() const {
         int n_sum = 0;
-        // Sumujemy wartości (sumy cyfr) bloków z rzędów 0, 1 i 2
-        for (int i = 0; i < 3 && i < table.size(); ++i) {
-            for (const string& block : table[i]) {
-                n_sum += getBlockValue(block);
+        for (int i = 0; i < table.size() && i < 3; ++i) {
+            for (int j = 0; j < table[i].size(); ++j) {
+                for (int k = 0; k < table[i][j].size(); ++k) {
+                    n_sum += table[i][j][k];
+                }
             }
         }
         return n_sum;
     }
 
-    // Weryfikacja spójności danych: czy suma cyfr wszystkich bloków = table_sum
-    bool verifyTableSum() const {
-        int total = 0;
-        for (const auto& row : table) {
-            for (const string& block : row) {
-                total += getBlockValue(block);
-            }
-        }
-        return total == table_sum_provided;
+    double getAtomicMass() const {
+        double protonMass = 1.007276;
+        double neutronMass = 1.008665;
+        double electronMass = 0.000548;
+
+        int P = getProtons();
+        int N = getNeutrons();
+        int E = getElectrons();
+
+        // Suma mas składników (bez uwzględnienia deficytu masy / energii wiązania)
+        return (P * protonMass) + (N * neutronMass) + (E * electronMass);
     }
 };
+
 
 // --- FUNKCJA RAPORTUJĄCA ---
 
@@ -72,9 +74,8 @@ void generateElementReport(const ElementData& e) {
     cout << ">>> RAPORT DLA PIERWIASTKA (Angle: " << e.angle << ") <<<" << endl;
     cout << "Liczba Protonów (P):  " << e.getProtons() << endl;
     cout << "Liczba Elektronów (E): " << e.getElectrons() << endl;
+    cout << "Masa atomowa: " << e.getAtomicMass() << endl;
     cout << "Liczba Neutronów (N):  " << e.getNeutrons() << " [Wyliczone z bloków jądrowych]" << endl;
-    cout << "Suma Kontrolna:        " << (e.verifyTableSum() ? "ZGODNA" : "BŁĄD")
-         << " (" << e.table_sum_provided << ")" << endl;
     cout << "Suma jest Pierwsza:    " << (isPrime(e.table_sum_provided) ? "TAK" : "NIE") << endl;
     cout << "-----------------------------------------------" << endl << endl;
 }
@@ -95,15 +96,15 @@ int main() {
 
     // PRZYKŁAD 2: Dane z Angle 10 (Neon)
     ElementData eNeon;
-    eNeon.angle = 10;
+    eNeon.angle = 14;
     eNeon.table_sum_provided = 29;
     eNeon.table = {
-        {"1", "7"},
-        {"333", "2222"},
-        {"0", "1"},
-        {"1", "0"},
-        {"1", "0"},
-        {"1", "0"}
+        {"0", "2"},
+        {"333", "7"},
+        {"2", "22"},
+        {"1", "22"},
+        {"1", "22"},
+        {"1", "22"}
     };
 
     generateElementReport(eNeg200);
